@@ -32,13 +32,38 @@ public class ClassProveedorImp implements IProveedor{
 
 	@Override
 	public void ActualizarProveedor(TblProveedorcl2 tblproveedor) {
-		// TODO Auto-generated method stub
+		// Nos conectamos con la unidad de persistencia 
+		EntityManagerFactory emf=Persistence.createEntityManagerFactory("LPII_CL2_MORENOROMEROLUISMIGUEL");
+		//permite gestionar entidades..
+		EntityManager em=emf.createEntityManager();
+		//iniciamos la transaccion
+		em.getTransaction().begin();
+		//actualizamos
+		em.merge(tblproveedor);
+		//emitimos mensaje por consola
+		System.out.println("Dato actualizado correctamente");
+		//confirmamos
+		em.getTransaction().commit();
+		//cerramos la transaccion...
+		em.close();
 		
 	}//fin del metodo Actualizar
 
 	@Override
 	public void EliminarProveedor(TblProveedorcl2 tblproveedor) {
-		// TODO Auto-generated method stub
+		//establecemos conexion con la unidad de persistencia...
+		EntityManagerFactory emf=Persistence.createEntityManagerFactory("LPII_CL2_MORENOROMEROLUISMIGUEL");
+		//gestionamos las entidades...
+		EntityManager em=emf.createEntityManager();
+		//iniciamos la transaccion...
+		em.getTransaction().begin();
+		//recuperar codigo a eliminar
+		TblProveedorcl2 tblprov =em.merge(tblproveedor);
+		//procedemos a eliminar
+		em.remove(tblprov);
+		System.out.println("dato eliminado");
+		em.getTransaction().commit();
+		em.close();
 		
 	}//fin del metodo Eliminar
 
@@ -62,8 +87,20 @@ public class ClassProveedorImp implements IProveedor{
 
 	@Override
 	public TblProveedorcl2 BuscarProveedor(TblProveedorcl2 tblproveedor) {
-		// TODO Auto-generated method stub
-		return null;
+		//establecemos conexion con la unidad de persistencia...
+		EntityManagerFactory emf=Persistence.createEntityManagerFactory("LPII_CL2_MORENOROMEROLUISMIGUEL");
+		//para administrar las transacciones 
+		EntityManager em=emf.createEntityManager();
+		//iniciamos la transaccion...
+		em.getTransaction().begin();
+		//recuperamos el codigo a buscar
+		TblProveedorcl2 tblprov = em.find(TblProveedorcl2.class, tblproveedor.getIdproveedorcl2());
+		//confirmamos la transaccion
+		em.getTransaction().commit();
+		//cerramos la transaccion
+		em.close();
+		//retornamos el registro solicitado
+		return tblprov;
 	}//fin del metodo Buscar
 
 }
